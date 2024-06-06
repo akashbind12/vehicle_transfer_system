@@ -1,45 +1,40 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+module.exports = (sequelize, DataTypes) => {
+  const TransferHistory = sequelize.define("TransferHistory", {
+      id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+      },
+      vehicle_number: {
+          type: DataTypes.STRING,
+          allowNull: false,
+      },
+      from_driver_id: {
+          type: DataTypes.INTEGER,
+      },
+      to_driver_id: {
+          type: DataTypes.INTEGER,
+      },
+      transfer_date: {
+          type: DataTypes.DATE,
+          defaultValue: DataTypes.NOW,
+      },
+  });
 
-// const User = require('./User');
-// const Candidate = require('./Candidate');
+  TransferHistory.associate = (models) => {
+      TransferHistory.belongsTo(models.Driver, {
+          foreignKey: 'from_driver_id',
+          as: 'from_driver',
+      });
+      TransferHistory.belongsTo(models.Driver, {
+          foreignKey: 'to_driver_id',
+          as: 'to_driver',
+      });
+      TransferHistory.belongsTo(models.Vehicle, {
+          foreignKey: 'vehicle_number',
+          as: 'vehicle',
+      });
+  };
 
-// const Vote = sequelize.define('Vote', {});
-
-// Vote.belongsTo(User);
-// Vote.belongsTo(Candidate);
-
-// module.exports = Vote;
-
-const Driver = require('./driver');
-const Vehicle = require('./vehicle');
-
-const TransferHistory = sequelize.define('TransferHistory', {
-  vehicle_number: {
-    type: DataTypes.STRING,
-    references: {
-      model: Vehicle,
-      key: 'vehicle_number',
-    },
-  },
-  from_driver_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Driver,
-      key: 'id',
-    },
-  },
-  to_driver_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Driver,
-      key: 'id',
-    },
-  },
-  transfer_date: {
-    type: DataTypes.DATE,
-    defaultValue: sequelize.NOW,
-  },
-});
-
-module.exports = TransferHistory;
+  return TransferHistory;
+};

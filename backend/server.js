@@ -1,17 +1,38 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const app = express();
+const path = require('path');
+const cors = require('cors');
+app.use(cors());
+
+const db = require("./models")
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const driverRoutes = require('./routes/driverRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const transferRoutes = require('./routes/transferRoutes');
 
-const app = express();
-
-app.use(bodyParser.json());
 
 // Routes
-app.use('/api', driverRoutes);
-app.use('/api', vehicleRoutes);
-app.use('/api', transferRoutes);
+app.get("/", (req, res) => {
+    res.json({ message: "vehicle_transfer_system backend"});
+});
+app.use('/api/drivers', driverRoutes);
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/transfers', transferRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+db.sequelize.sync().then((req) => {
+    app.listen(3000, () => {
+        console.log("server running at port 3000")
+    })
+})
+
+
+
+
+
+
