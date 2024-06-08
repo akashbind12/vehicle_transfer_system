@@ -1,5 +1,7 @@
+// App.js
+
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DriverList from './components/DriverList';
 import VehicleList from './components/VehicleList';
 import TransferForm from './components/TransferForm';
@@ -7,23 +9,15 @@ import TransferHistory from './components/TransferHistory';
 import AddDriver from './components/AddDriver';
 import AddVehicle from './components/AddVehicle';
 import TransferHistoryForVehicle from './components/TransferHistoryForVehicle';
+import Navigation from './components/Navigation';
+import './App.css';
 
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className="container">
         <h1>Vehicle Transfer System</h1>
-        <nav>
-          <ul>
-            <li><Link to="/drivers">Drivers</Link></li>
-            <li><Link to="/vehicles">Vehicles</Link></li>
-            <li><Link to="/transfer">Transfer Vehicle</Link></li>
-            <li><Link to="/transfers">Transfer History</Link></li>
-            <li><Link to="/add-driver">Add Driver</Link></li>
-            <li><Link to="/add-vehicle">Add Vehicle</Link></li>
-            <li><Link to="/transfer-history">Vehicle Transfer History</Link></li>
-          </ul>
-        </nav>
+        <Navigation />
         <Routes>
           <Route path="/drivers" element={<DriverList />} />
           <Route path="/vehicles" element={<VehicleList />} />

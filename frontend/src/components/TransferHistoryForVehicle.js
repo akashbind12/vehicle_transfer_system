@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTransferHistory } from '../redux/actions/transferActions';
+import TransferItem from './TransferItem';
 
 const TransferHistoryForVehicle = () => {
   const [vehicleNumber, setVehicleNumber] = useState('');
@@ -10,6 +11,10 @@ const TransferHistoryForVehicle = () => {
     e.preventDefault();
     dispatch(fetchTransferHistory(vehicleNumber));
   };
+
+  useEffect(() => {
+    dispatch(fetchTransferHistory(""));
+  },[dispatch])
 
   return (
     <div>
@@ -29,20 +34,14 @@ const TransferHistoryForVehicle = () => {
         </button>
         {error && <p>Error: {error}</p>}
       </form>
-      <div>
-        <h3>History:</h3>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul>
-            {transferHistory.map(transfer => (
-              <li key={transfer.id}>
-                {transfer.vehicle_number} transferred from {transfer.from_driver_id} to {transfer.to_driver_id} on {new Date(transfer.createdAt).toLocaleString()}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <div className="transfer-history">
+      <h2>Transfer History</h2>
+      <ul>
+          {transferHistory.map(transfer => (
+            <TransferItem key={transfer.id} transfer={transfer} />
+          ))}
+        </ul>
+    </div>
     </div>
   );
 };

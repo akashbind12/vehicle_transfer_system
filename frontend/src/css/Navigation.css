@@ -1,0 +1,39 @@
+/* Navigation.css */
+
+.navbar {
+    background-color: black;
+    padding: 10px;
+  }
+  
+  .navbar ul {
+    /* border: 1px solid red; */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center; 
+    /* display : flex;
+    justify-content: space-around; */
+  }
+  
+  .navbar ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navbar ul li a:hover {
+    color: #ccc;
+  }
+  
+  /* Media query for mobile view */
+  @media (max-width: 768px) {
+    .navbar ul li {
+      display: block; 
+      margin-bottom: 10px; 
+    }
+  }
+  

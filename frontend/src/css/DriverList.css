@@ -1,0 +1,60 @@
+.driver-list {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .driver-list h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .driver-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .driver-item {
+    display: flex;
+    align-items: flex-start;
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  
+  .driver-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .driver-id,
+  .driver-name,
+  .driver-phone,
+  .driver-created,
+  .driver-updated {
+    font-size: 14px;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .driver-id strong,
+  .driver-name strong,
+  .driver-phone strong,
+  .driver-created strong,
+  .driver-updated strong {
+    font-weight: bold;
+  }
+  
