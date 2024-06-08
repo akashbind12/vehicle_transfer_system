@@ -15,6 +15,7 @@ export const addVehicle = (vehicle) => async dispatch => {
   try {
     const response = await axios.post('/api/vehicles', vehicle);
     dispatch({ type: 'ADD_VEHICLE_SUCCESS', payload: response.data });
+    alert('Vehicle Added successfully');
   } catch (error) {
     dispatch({ type: 'ADD_VEHICLE_FAILURE', payload: error.message });
   }

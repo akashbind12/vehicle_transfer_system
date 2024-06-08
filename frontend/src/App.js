@@ -6,6 +6,7 @@ import TransferForm from './components/TransferForm';
 import TransferHistory from './components/TransferHistory';
 import AddDriver from './components/AddDriver';
 import AddVehicle from './components/AddVehicle';
+import TransferHistoryForVehicle from './components/TransferHistoryForVehicle';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <li><Link to="/transfers">Transfer History</Link></li>
             <li><Link to="/add-driver">Add Driver</Link></li>
             <li><Link to="/add-vehicle">Add Vehicle</Link></li>
+            <li><Link to="/transfer-history">Vehicle Transfer History</Link></li>
           </ul>
         </nav>
         <Routes>
@@ -29,6 +31,7 @@ const App = () => {
           <Route path="/transfers" element={<TransferHistory />} />
           <Route path="/add-driver" element={<AddDriver />} />
           <Route path="/add-vehicle" element={<AddVehicle />} />
+          <Route path="/transfer-history" element={<TransferHistoryForVehicle />} />
         </Routes>
       </div>
     </Router>

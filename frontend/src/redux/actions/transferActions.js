@@ -21,3 +21,15 @@ export const transferVehicle = (transfer) => async dispatch => {
     alert('Vehicle transfer failed');
   }
 };
+
+
+export const fetchTransferHistory = (vehicleNumber) => async dispatch => {
+    dispatch({ type: 'FETCH_REQUEST' });
+    try {
+      const response = await axios.get(`/api/transfers/vehicle/${vehicleNumber}`);
+      dispatch({ type: 'FETCH_TRANSFER_HISTORY', payload: response.data });
+    } catch (error) {
+        console.log("e:",error)
+      dispatch({ type: 'FETCH_FAILURE', error: error.response.data.error });
+    }
+};

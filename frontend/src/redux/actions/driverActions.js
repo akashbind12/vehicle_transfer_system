@@ -15,6 +15,7 @@ export const addDriver = (driver) => async dispatch => {
   try {
     const response = await axios.post('/api/drivers', driver);
     dispatch({ type: 'ADD_DRIVER_SUCCESS', payload: response.data });
+    alert('Driver Added successfully');
   } catch (error) {
     dispatch({ type: 'ADD_DRIVER_FAILURE', payload: error.message });
   }
