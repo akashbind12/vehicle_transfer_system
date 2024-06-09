@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addVehicle } from '../redux/actions/vehicleActions';
+import { addVehicle, fetchVehicles } from '../redux/actions/vehicleActions';
 
 const AddVehicle = () => {
   const [vehicleNumber, setVehicleNumber] = useState('');
@@ -8,7 +8,30 @@ const AddVehicle = () => {
   const [pucCertificate, setPucCertificate] = useState(null);
   const [insuranceCertificate, setInsuranceCertificate] = useState(null);
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(state => state.vehicle);
+  const { vehicles, loading, error } = useSelector(state => state.vehicle);
+
+  const pucCertificateInputRef = useRef(null);
+  const insuranceCertificateInputRef = useRef(null);
+
+  const [prevVehiclesLength, setPrevVehiclesLength] = useState(vehicles.length);
+
+  useEffect(() => {
+    // Check if a new vehicle has been added
+    if (vehicles.length > prevVehiclesLength) {
+      // Reset form fields
+      setVehicleNumber('');
+      setVehicleType('');
+      setPucCertificate(null);
+      setInsuranceCertificate(null);
+      pucCertificateInputRef.current.value = null; // Clear file input
+      insuranceCertificateInputRef.current.value = null; // Clear file input
+      setPrevVehiclesLength(vehicles.length); // Update the previous length
+    }
+  }, [vehicles, prevVehiclesLength]);
+
+  useEffect(() => {
+    dispatch(fetchVehicles());
+  }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,6 +69,7 @@ const AddVehicle = () => {
           <label>PUC Certificate</label>
           <input 
             type="file" 
+            ref={pucCertificateInputRef}
             onChange={(e) => setPucCertificate(e.target.files[0])} 
             required 
           />
@@ -54,6 +78,7 @@ const AddVehicle = () => {
           <label>Insurance Certificate</label>
           <input 
             type="file" 
+            ref={insuranceCertificateInputRef}
             onChange={(e) => setInsuranceCertificate(e.target.files[0])} 
             required 
           />
@@ -61,7 +86,7 @@ const AddVehicle = () => {
         <button type="submit" disabled={loading}>
           {loading ? 'Adding...' : 'Add Vehicle'}
         </button>
-        {error && <p>Error: {error}</p>}
+        {error && <p className="error-message">Error: {error}</p>}
       </form>
     </div>
   );

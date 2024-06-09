@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDriver } from '../redux/actions/driverActions';
+import { addDriver, fetchDrivers } from '../redux/actions/driverActions';
 
 const AddDriver = () => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(state => state.driver);
+  const { drivers, loading, error } = useSelector(state => state.driver);
+
+  const profilePhotoInputRef = useRef(null);
+
+  const [prevDriversLength, setPrevDriversLength] = useState(drivers.length);
+
+  useEffect(() => {
+    if (drivers.length > prevDriversLength) {
+      setName('');
+      setPhoneNumber('');
+      setProfilePhoto(null);
+      if (profilePhotoInputRef.current) {
+        profilePhotoInputRef.current.value = null; // Clear file input
+      }
+      setPrevDriversLength(drivers.length); // Update the previous length
+    }
+  }, [drivers.length, prevDriversLength]);
+
+  useEffect(() => {
+    dispatch(fetchDrivers());
+  }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +64,7 @@ const AddDriver = () => {
           <label>Profile Photo</label>
           <input 
             type="file" 
+            ref={profilePhotoInputRef}
             onChange={(e) => setProfilePhoto(e.target.files[0])} 
             required 
           />

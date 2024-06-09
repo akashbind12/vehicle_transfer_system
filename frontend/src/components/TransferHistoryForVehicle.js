@@ -32,7 +32,7 @@ const TransferHistoryForVehicle = () => {
         <button type="submit" disabled={loading}>
           {loading ? 'Fetching...' : 'Get Transfer History'}
         </button>
-        {error && <p>Error: {error}</p>}
+        {error && <p className="error-message">Error: {error}</p>}
       </form>
       <div className="transfer-history">
       <h2>Transfer History</h2>
