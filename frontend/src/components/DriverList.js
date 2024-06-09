@@ -6,7 +6,8 @@ import '../css/DriverList.css';
 const DriverList = () => {
   const dispatch = useDispatch();
   const { drivers, loading, error } = useSelector(state => state.driver);
-
+  const baseUrl = process.env.REACT_APP_BASE_URL;  
+  
   useEffect(() => {
     dispatch(fetchDrivers());
   }, [dispatch]);
@@ -26,7 +27,7 @@ const DriverList = () => {
         {drivers.map(driver => (
           <li key={driver.id} className="driver-item">
             <img 
-              src={`http://localhost:3000/${driver.profile_photo}`} 
+              src={`${baseUrl}/${driver.profile_photo}`} 
               alt={`${driver.name}'s profile`} 
               className="profile-photo" 
             />

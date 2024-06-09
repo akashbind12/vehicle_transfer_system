@@ -6,6 +6,7 @@ import '../css/VehicleList.css'; // Import the CSS file
 const VehicleList = () => {
   const dispatch = useDispatch();
   const { vehicles, loading, error } = useSelector(state => state.vehicle);
+  const baseUrl = process.env.REACT_APP_BASE_URL;  
 
   useEffect(() => {
     dispatch(fetchVehicles());
@@ -31,10 +32,10 @@ const VehicleList = () => {
               <p className="vehicle-created"><strong>Created At:</strong> {new Date(vehicle.createdAt).toLocaleString()}</p>
               <p className="vehicle-updated"><strong>Updated At:</strong> {new Date(vehicle.updatedAt).toLocaleString()}</p>
               <p className="vehicle-puc"><strong>PUC Certificate:</strong> 
-                <a href={`http://localhost:3000/${vehicle.puc_certificate}`} target="_blank" rel="noopener noreferrer">Download</a>
+                <a href={`${baseUrl}/${vehicle.puc_certificate}`} target="_blank" rel="noopener noreferrer">Download</a>
               </p>
               <p className="vehicle-insurance"><strong>Insurance Certificate:</strong> 
-                <a href={`http://localhost:3000/${vehicle.insurance_certificate}`} target="_blank" rel="noopener noreferrer">Download</a>
+                <a href={`${baseUrl}/${vehicle.insurance_certificate}`} target="_blank" rel="noopener noreferrer">Download</a>
               </p>
             </div>
           </li>
