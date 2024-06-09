@@ -14,7 +14,9 @@ exports.createDriver = async (req, res) => {
 
 exports.getDrivers = async (req, res) => {
     try {
-        const drivers = await Driver.findAll();
+        const drivers = await Driver.findAll({
+            order: [['createdAt', 'DESC']],
+        });
         res.status(200).json(drivers);
     } catch (error) {
         res.status(400).json({ error: error.message });

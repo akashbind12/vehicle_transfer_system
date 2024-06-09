@@ -2,7 +2,8 @@ const initialState = {
     transfers: [],
     transferHistory: [],
     loading: false,
-    error: null
+    error: null,
+    success: false // Add success field
 };
 
 const transferReducer = (state = initialState, action) => {
@@ -29,19 +30,22 @@ const transferReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
-                error: null
+                error: null,
+                success: false // Reset success on new request
             };
         case 'TRANSFER_VEHICLE_SUCCESS':
             return {
                 ...state,
                 transfers: [...state.transfers, action.payload],
-                loading: false
+                loading: false,
+                success: true // Set success to true on successful transfer
             };
         case 'TRANSFER_VEHICLE_FAILURE':
             return {
                 ...state,
                 error: action.payload,
-                loading: false
+                loading: false,
+                success: false // Set success to false on failure
             };
         case 'FETCH_REQUEST':
             return { 

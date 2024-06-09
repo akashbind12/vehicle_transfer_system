@@ -9,21 +9,45 @@ const TransferForm = () => {
 
   const { drivers, loading: driversLoading, error: driversError } = useSelector(state => state.driver);
   const { vehicles, loading: vehiclesLoading, error: vehiclesError } = useSelector(state => state.vehicle);
-  const transferLoading = useSelector(state => state.transfer.loading);
-  const transferError = useSelector(state => state.transfer.error);
+  const { loading: transferLoading, error: transferError, success: transferSuccess } = useSelector(state => state.transfer);
 
   const [vehicleNumber, setVehicleNumber] = useState('');
   const [fromDriverId, setFromDriverId] = useState('');
   const [toDriverId, setToDriverId] = useState('');
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   useEffect(() => {
     dispatch(fetchDrivers());
     dispatch(fetchVehicles());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (vehicleNumber) {
+      const selected_vehicle = vehicles.find(v => v.vehicle_number === vehicleNumber);
+      setSelectedVehicle(selected_vehicle);
+      if (selected_vehicle && selected_vehicle.transfer_history.length > 0) {
+        const lastTransfer = selected_vehicle.transfer_history[0];
+        setFromDriverId(lastTransfer.to_driver_id);
+      } else {
+        setFromDriverId(null);
+      }
+    }
+  }, [vehicles, vehicleNumber]);
+
+  useEffect(() => {
+    if (transferSuccess) {
+      dispatch(fetchVehicles());  // Fetch the updated list of vehicles
+      // Reset the form fields
+      setVehicleNumber('');
+      setFromDriverId('');
+      setToDriverId('');
+      setSelectedVehicle(null);
+    }
+  }, [transferSuccess, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(transferVehicle({ vehicle_number: vehicleNumber, from_driver_id: fromDriverId, to_driver_id: toDriverId }));
+    dispatch(transferVehicle({ vehicle_number: vehicleNumber, from_driver_id: fromDriverId, to_driver_id: toDriverId })); 
   };
 
   if (driversLoading || vehiclesLoading) {
@@ -33,6 +57,8 @@ const TransferForm = () => {
   if (driversError || vehiclesError) {
     return <div>Error: {driversError || vehiclesError}</div>;
   }
+
+  const fromDriver = drivers.find(driver => driver.id === fromDriverId);
 
   return (
     <div>
@@ -47,15 +73,14 @@ const TransferForm = () => {
             ))}
           </select>
         </div>
-        <div>
-          <label>From Driver:</label>
-          <select value={fromDriverId} onChange={(e) => setFromDriverId(e.target.value)} required>
-            <option value="">Select Driver</option>
-            {drivers.map(driver => (
-              <option key={driver.id} value={driver.id}>{driver.name}</option>
-            ))}
-          </select>
-        </div>
+        {selectedVehicle && selectedVehicle.transfer_history.length > 0 && fromDriver ? (
+          <div>
+            <label>From Driver:</label>
+            <select value={fromDriverId} disabled>
+              <option value={fromDriver.id}>{fromDriver.name}</option>
+            </select>
+          </div>
+        ) : null}
         <div>
           <label>To Driver:</label>
           <select value={toDriverId} onChange={(e) => setToDriverId(e.target.value)} required>
@@ -68,7 +93,7 @@ const TransferForm = () => {
         <button type="submit" disabled={transferLoading}>
           {transferLoading ? 'Transferring...' : 'Transfer'}
         </button>
-        {transferError && <p>Error: {transferError}</p>}
+        {transferError && <p className="error-message">Error: {transferError}</p>}
       </form>
     </div>
   );

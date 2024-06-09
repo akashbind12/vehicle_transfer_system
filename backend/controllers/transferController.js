@@ -4,20 +4,28 @@ const TransferHistory = db.TransferHistory;
 exports.transferVehicle = async (req, res) => {
     try {
         const { vehicle_number, from_driver_id, to_driver_id } = req.body;
+
+        if (from_driver_id == to_driver_id) {
+            return res.status(400).json({ error: "The from_driver_id and to_driver_id cannot be the same." });
+        }
+
         const transfer = await TransferHistory.create({
             vehicle_number,
             from_driver_id,
             to_driver_id,
         });
+
         res.status(201).json(transfer);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
+
 exports.getTransfers = async (req, res) => {
     try {
         const transfers = await TransferHistory.findAll({
+            order: [['createdAt', 'DESC']],
             include: [
                 { model: db.Driver, as: 'from_driver' },
                 { model: db.Driver, as: 'to_driver' },

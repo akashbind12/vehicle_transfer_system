@@ -6,7 +6,7 @@ export const fetchTransfers = () => async dispatch => {
     const response = await axios.get('/api/transfers');
     dispatch({ type: 'FETCH_TRANSFERS_SUCCESS', payload: response.data });
   } catch (error) {
-    dispatch({ type: 'FETCH_TRANSFERS_FAILURE', payload: error.message });
+    dispatch({ type: 'FETCH_TRANSFERS_FAILURE', payload: error.response.data.error});
   }
 };
 
@@ -17,7 +17,7 @@ export const transferVehicle = (transfer) => async dispatch => {
     dispatch({ type: 'TRANSFER_VEHICLE_SUCCESS', payload: response.data });
     alert('Vehicle transfer successful');
   } catch (error) {
-    dispatch({ type: 'TRANSFER_VEHICLE_FAILURE', payload: error.message });
+    dispatch({ type: 'TRANSFER_VEHICLE_FAILURE', payload: error.response.data.error });
     alert('Vehicle transfer failed');
   }
 };

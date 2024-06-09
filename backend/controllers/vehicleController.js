@@ -15,9 +15,20 @@ exports.createVehicle = async (req, res) => {
 
 exports.getVehicles = async (req, res) => {
     try {
-        const vehicles = await Vehicle.findAll();
+        const vehicles = await Vehicle.findAll({
+            order: [['createdAt', 'DESC']],
+            include: [
+                { 
+                    model: db.TransferHistory, 
+                    as: 'transfer_history',
+                    separate: true,
+                    order: [['createdAt', 'DESC']],
+                },
+            ],
+        });
         res.status(200).json(vehicles);
     } catch (error) {
+        console.log("err:",error)
         res.status(400).json({ error: error.message });
     }
 };
