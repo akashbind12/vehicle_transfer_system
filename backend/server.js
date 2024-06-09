@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 app.use(cors());
+require('dotenv').config();
+// console.log(":",process.env.PORT)
 
 const db = require("./models")
 app.use(express.json());
