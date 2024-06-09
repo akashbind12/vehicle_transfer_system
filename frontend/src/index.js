@@ -8,7 +8,7 @@ import axios from 'axios';
 import store from './redux/store';
 
 // Set default base URL for Axios
-axios.defaults.baseURL = 'http://localhost:3000'; 
+axios.defaults.baseURL = 'https://vehicle-transfer-system-api.onrender.com'; 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
