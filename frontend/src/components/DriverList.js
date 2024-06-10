@@ -7,7 +7,8 @@ const DriverList = () => {
   const dispatch = useDispatch();
   const { drivers, loading, error } = useSelector(state => state.driver);
   const baseUrl = process.env.REACT_APP_BASE_URL;  
-  
+  const defaultProfilePhoto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRii9A7ErPEuec7Y6k6UJONLW2sbq9hKVB8Iw&s';
+
   useEffect(() => {
     dispatch(fetchDrivers());
   }, [dispatch]);
@@ -30,6 +31,7 @@ const DriverList = () => {
               src={`${baseUrl}/${driver.profile_photo}`} 
               alt={`${driver.name}'s profile`} 
               className="profile-photo" 
+              onError={(e) => { e.target.src = defaultProfilePhoto; }} 
             />
             <div className="driver-info">
               <p className="driver-id"><strong>ID:</strong> {driver.id}</p>
